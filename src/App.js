@@ -22,19 +22,23 @@ import React ,{useState,useEffect }from 'react';
 import Map, {Marker} from 'react-map-gl';
 
 function App() {
-  const[placesInfo,setPlacesInfo] = useState([])
+  const[placesInfo,setPlacesInfo] = useState([]);
 
   async function listLogs(){
     const response = await fetch('http://localhost:1337/routes');
-    const data = await response.json();
-    setPlacesInfo(data);
+    return await response.json();
+   
   }
 
   useEffect(() => {
-     listLogs();
-     console.log(placesInfo)
+    (async() => {
+       const placesInfo = await listLogs();
+       setPlacesInfo(placesInfo);
+       console.log(placesInfo['message'])
+    })()
+     
   
-  },[placesInfo])
+  },[])
 
   return <Map
     initialViewState={{
@@ -45,9 +49,13 @@ function App() {
     mapStyle="mapbox://styles/mapbox/streets-v9"
     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
   >
-    <Marker longitude={-100} latitude={40} anchor="bottom" >
+    {placesInfo['message'].map((entry) => (
+      <Marker longitude={entry.longitude} latitude={entry.latitude} anchor="bottom" >
       <img src="./pin.png " alt="marker" />
+      <div>{entry.description}</div>
     </Marker>
+    ))}
+    
   </Map>;
 }
 
