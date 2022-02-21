@@ -16,7 +16,7 @@ function App() {
  
 
   async function listLogs(){
-    const response = await fetch('http://localhost:1337/routes');
+    const response = await fetch('https://wild-tan-lovebird-robe.cyclic.app/routes');
     return await response.json();
    
   }
