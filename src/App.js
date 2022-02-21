@@ -1,28 +1,18 @@
 
 
-// function App() {
-//   const [viewState, setViewState] = React.useState({
-//     width:'100vw',
-//     height:'100vh',
-//     longitude: -122.4376,
-//     latitude: 37.7577,
-//     zoom: 3.5
-//   });
-
-//   return <Map
-//     {...viewState}
-//     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-//     onMove={evt => setViewState(evt.viewState)}
-//     mapStyle="mapbox://styles/mapbox/streets-v9"
-    
-//   />;
-// }
-
 import React ,{useState,useEffect }from 'react';
 import Map, {Marker} from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 function App() {
   const[placesInfo,setPlacesInfo] = useState([]);
+  const [viewState,setViewState] = useState({
+    longitude: 1.0232,
+    latitude: 7.9465,
+    zoom: 4
+  })
+
+ 
 
   async function listLogs(){
     const response = await fetch('http://localhost:1337/routes');
@@ -34,29 +24,34 @@ function App() {
     (async() => {
        const placesInfo = await listLogs();
        setPlacesInfo(placesInfo);
-       console.log(placesInfo['message'])
+      
     })()
      
   
   },[])
 
   return <Map
-    initialViewState={{
-      longitude: -100,
-      latitude: 40,
-      zoom: 3.5
-    }}
+    {...viewState}
     mapStyle="mapbox://styles/mapbox/streets-v9"
+    onMove={evt => setViewState(evt.viewState)}
+    style={{width: '100vw', height: '100vh'}}
     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
   >
-    {placesInfo['message'].map((entry) => (
-      <Marker longitude={entry.longitude} latitude={entry.latitude} anchor="bottom" >
-      <img src="./pin.png " alt="marker" />
-      <div>{entry.description}</div>
-    </Marker>
-    ))}
+    {placesInfo.map(entry => (  
+      <Marker longitude={entry.longitude} latitude={entry.latitude} key={entry._id} >
+            <img 
+            style={{width:24,height:24}}
+            className='marker'
+            src=" https://i.imgur.com/y0G5YTX.png"
+            alt="marker" 
+            />
+     </Marker>
+     )    
+    )}
     
   </Map>;
 }
 
 export default App
+
+
