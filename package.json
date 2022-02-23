@@ -15,7 +15,8 @@
   },
   "homepage": "https://nad279444.github.io/React_Travel/",
   "scripts": {
-    "deploy":"gh-pages -d build -r  https://github.com/nad279444/React_Travel.git",
+    "predeploy":"npm run build",
+    "deploy":"gh-pages -d build ",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -17,7 +17,7 @@ function App() {
 
   async function listLogs(){
     const response = await fetch('https://wild-tan-lovebird-robe.cyclic.app/routes');
-    return await response.json();
+    return response.json();
    
   }
 
@@ -39,8 +39,8 @@ function App() {
     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
   >
     {placesInfo.map(entry => (
-      <>
-      <Marker longitude={entry.longitude} latitude={entry.latitude} key={entry._id} >
+      <React.Fragment key={entry._id}>
+      <Marker longitude={entry.longitude} latitude={entry.latitude} >
         <div onClick={() => setShowPopup({
           [entry._id]:true,
         })}>
@@ -56,11 +56,14 @@ function App() {
      {showPopup[entry._id] && (
       <Popup longitude={entry.longitude} latitude={entry.latitude}
         anchor="top"
-        dynamicPosition={true}
-        onClose={() => setShowPopup(false)}>
-        <div>{entry.title}</div>
-      </Popup>)}
-     </>
+        onClose={() => setShowPopup({})}
+        closeButton={true}
+        closeOnClick={false}
+      >
+       <div>{entry.title}</div>
+      </Popup>
+      )}
+     </React.Fragment>
      ), 
   
     )
