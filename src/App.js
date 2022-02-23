@@ -39,7 +39,7 @@ function App() {
     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
   >
     {placesInfo.map(entry => (
-      <React.Fragment key={entry._id}>
+      <div key={entry._id}>
       <Marker longitude={entry.longitude} latitude={entry.latitude} >
         <div onClick={() => setShowPopup({
           [entry._id]:true,
@@ -60,10 +60,12 @@ function App() {
         closeButton={true}
         closeOnClick={false}
       >
-       <div>{entry.title}</div>
+       <div>
+         <h3 style={{color:'purple'}}>{entry.title}</h3>
+       </div>
       </Popup>
       )}
-     </React.Fragment>
+     </div>
      ), 
   
     )
